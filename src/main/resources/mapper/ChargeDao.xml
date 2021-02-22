@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.his.dao.ChargeDao">
+
+	<!-- 添加挂号发票项目-->
+	<select id="addRegisterCharge">
+		UPDATE charge
+		SET registerID = #{registerID}, itemID = 40, price = #{price}, itemType = 3, chargeTime = #{currentTime}, chargeID = #{chargeID}, chargeType = #{chargeType}, settlement = #{settlement}
+		WHERE receiptNumber = #{receiptNumber}
+	</select>
+	
+	<!-- 生成一新发票号 -->
+	<select id="createEmpty" resultType="map">
+		SELECT max(chaID), max(receiptNumber)
+		FROM charge
+	</select>
+	
+	<!-- 插入一空项目发票项目 -->
+	<select id="insertEmpty">
+		INSERT INTO charge
+			VALUES(#{chaID}, null, #{receiptNumber}, null, null, null, null, null, null, null, null, null)
+	</select>
+	
+	<!-- 修改发票项目的冲红发票内容  -->
+	<select id="modifyRefund">
+		UPDATE charge
+		SET refundID = #{receiptNumber}
+		WHERE registerID = #{registerID} AND ItemType = #{ItemType} AND ItemID = #{ItemID}
+	</select>
+	
+	<!-- 通过registerID查找 -->
+	<select id="searchByRegisterID" resultType="com.his.entity.Receipt">
+		SELECT *
+		FROM charge
+		WHERE registerID = #{registerID} AND ItemType = #{ItemType} AND ItemID = #{ItemID}
+	</select>
+	
+	<!-- 更改冲红发票的内容 -->
+	<select id="updateRefundInfo">
+		UPDATE charge
+		SET registerID = #{registerID} , itemID = #{itemID} , itemType = #{itemType} ,
+			price = #{price} , chargeTime = #{currentTime} , chargeID = #{chargeID} ,
+		 	chargeType = #{chargeType} , settlement = #{settlement} 
+		WHERE receiptNumber = #{receiptNumber}
+	</select>
+	
+	<!-- 更改冲红发票的内容 -->
+	<select id="updateDrugItem">
+		UPDATE charge
+		SET caseID = #{caseID} , itemID = #{itemID} , itemType = 1 ,
+			price = #{price} , chargeTime = #{currentTime} , chargeID = #{chargeID} ,
+		 	chargeType = #{chargeType} , settlement = 1 
+		WHERE receiptNumber = #{receiptNumber}
+	</select>
+
+		<!-- 更改冲红发票的内容 -->
+	<select id="addDrugItem">
+		INSERT INTO charge
+			VALUES(null, null, #{receiptNumber}, #{itemID}, #{price}, 1, #{currentTime}, #{chargeID}, #{chargeType}, null, 1, #{caseID})
+	</select>
+</mapper>

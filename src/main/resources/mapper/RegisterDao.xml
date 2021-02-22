@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.his.dao.RegisterDao">
+
+	<!-- 生成一新发票号 -->
+	<select id="newRegisterID" resultType="string">
+		SELECT max(registerID) + 1
+		FROM register
+	</select>
+	
+	<!-- 生成一新发票号 -->
+	<select id="insertRegister">
+		INSERT INTO register
+			VALUES(#{registerID}, #{caseID}, #{currentTime}, 1, #{newNote}, #{docID}, #{levID}, #{chargeID}, #{chargeType}, #{regType}, #{depID}, #{appointDate})
+	</select>
+	
+	<!-- 查找当日与caseID相同的项目 -->
+	<select id="searchByCaseID" resultType="com.his.entity.Register">
+		SELECT registerID, caseID, createTime, registState, newNote, docID, register.levID, chargeID, chargeType, regType, user.depID, realName, DepName
+		FROM register, user, department
+		WHERE caseID = #{caseID} AND register.depID = department.DepID AND register.docID = user.userID AND register.levID = user.levID  AND user.depID = department.DepID AND user.depID = register.depID AND TO_DAYS( now() ) - TO_DAYS( register.appointDate ) = 0
+	</select>
+	
+	<!-- 查找当日与caseID相同的项目 -->
+	<select id="changeStateByRegisterID">
+		UPDATE register
+		SET registState = #{registState}
+		WHERE registerID = #{registerID}
+	</select>
+	
+	<!-- 找出当前医生负责的所有患者 -->
+	<select id="searchByDocID" resultType="com.his.entity.Register">
+		SELECT *
+		FROM register, `case`
+		WHERE docID = #{docID} AND `case`.caseID = register.caseID AND TO_DAYS( now() ) - TO_DAYS( register.appointDate ) = 0
+	</select>
+	
+		<!-- 找出当前医生负责的所有患者 -->
+	<select id="isRepeatNow" resultType="com.his.entity.Register">
+		SELECT *
+		FROM register
+		WHERE caseID = #{caseID} AND depID = #{depID} AND docID = #{docID} AND TO_DAYS( now() ) - TO_DAYS( register.appointDate ) = 0 AND (register.registState = 1 OR register.registState = 2)
+	</select>
+</mapper>

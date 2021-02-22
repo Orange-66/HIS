@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.his.dao.CaseDao">
+
+	<!-- 以caseID查找患者 -->
+	<select id="searchByCaseID" resultType="com.his.entity.Case">
+		SELECT *
+		FROM `case`
+		WHERE caseID = #{caseID}
+	</select>
+	
+	<!-- 查找最大病历号 -->
+	<select id="maxCaseID" resultType="string">
+		SELECT max(caseID) + 1
+		FROM `case`
+	</select>
+	
+	<!-- 新建病历 -->
+	<select id="newCase">
+		INSERT INTO `case`
+			VALUES(#{caseID}, null, null, null, null, null, null, null)
+	</select>
+	
+	<!-- 删除病历 -->
+	<select id="deleteCase">
+		DELETE FROM `case`
+		WHERE caseID = #{caseID}
+	</select>
+	
+	<!-- 修改病历 -->
+	<select id="modifyCase">
+		UPDATE `case`
+		SET name = #{name}, gender = #{gender}, patientID = #{patientID}, birthday = #{birthday}, age = #{age}, ageUnit = #{ageUnit}, address = #{address}
+		WHERE caseID = #{caseID}
+	</select>
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.his.dao.UserDao">
+
+	<!-- 查找所有用户 -->
+	<select id="findAll" resultType="com.his.entity.User">
+		select * from user
+	</select>
+	
+	<!-- 判断是否存在某用户 -->
+	<select id="queryByName" resultType="com.his.entity.User">
+		SELECT *
+		FROM user
+		WHERE userName = #{userName}
+	</select>
+	
+	<!-- 查找符合相应科室和级别的医生 -->
+	<select id="searchDoctorByDT" resultType="map">
+		SELECT realName, userID
+		FROM user
+		WHERE depID = #{depID} AND titleID = #{titleID}
+	</select>
+</mapper>

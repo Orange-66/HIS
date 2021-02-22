@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.his.dao.RegtableDao">
+
+	<!-- 生成一新发票号 -->
+	<select id="searchRemain" resultType="string">
+		SELECT sumTicket - usedTicket
+		FROM regtable
+		WHERE date = #{date} AND regType = #{regType} AND docID = #{docID}
+	</select>
+	
+	<!-- 生成一新发票号 -->
+	<select id="modifyUsedticket" >
+		UPDATE regtable
+		SET	usedTicket = usedTicket + 1
+		WHERE date = #{date} AND docID = #{docID} AND regType = #{regType}
+	</select>
+	
+	<!-- 生成一新发票号 -->
+	<select id="modifyCancelticket" >
+		UPDATE regtable
+		SET	usedTicket = usedTicket - 1
+		WHERE date = #{date} AND docID = #{docID} AND regType = #{regType}
+	</select>
+</mapper>

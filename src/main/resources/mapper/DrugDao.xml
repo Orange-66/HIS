@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.his.dao.DrugDao">
+	<!-- 以挂号号码查找病历首页信息 -->
+	<select id="selectAll" resultType="com.his.entity.Drug">
+		SELECT *
+		FROM drug, constant
+		WHERE drug.dosage = constant.constantID
+	</select>
+</mapper>

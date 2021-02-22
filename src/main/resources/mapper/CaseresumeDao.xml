@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.his.dao.CaseresumeDao">
+
+	<!-- 修改病例主诉 -->
+	<select id="updateByRegister">
+		REPLACE INTO caseresume (registerID, mainSuit, HPI, SHP, PS, allergies, examination, preDiagnosis, recommend, subInformation, obInformation, diseID, programme, finalDiagnostic, settleState)
+			VALUES(#{registerID}, #{mainSuit}, #{HPI}, #{SHP}, #{PS}, #{allergies}, #{examination}, null, null,null,null,null,null,null,2)
+	</select>
+	
+	<!-- 以挂号号码查找病历首页信息 -->
+	<select id="searchByRegisterID" resultType="com.his.entity.Caseresume">
+		SELECT *
+		FROM caseresume
+		WHERE registerID = #{registerID}
+	</select>
+</mapper>

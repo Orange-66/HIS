@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.his.dao.PrescriptionDao">
+	<!-- 以caseID查找患者 -->
+	<select id="maxPrescriptID" resultType="string">
+		SELECT max(prescriptID) + 1
+		FROM prescription
+	</select>
+	
+	<!-- 以caseID查找患者 -->
+	<select id="addPrescription" resultType="string">
+		INSERT INTO prescription
+			VALUES(#{prescriptionID}, #{registerID}, 1, #{currentTime})
+	</select>
+	
+	<!-- 以caseID查找患者 -->
+	<select id="searchBycaseID" resultType="com.his.entity.Charge">
+		SELECT `case`.caseID, `case`.name, drugitem.itemID, drug.drugName, drug.price, drugitem.number, drugitem.createTime, drugitem.itemState
+		FROM drugitem, prescription, register, `case`, drug
+		WHERE drugitem.prescriptID = prescription.prescriptID AND prescription.registerID = register.registerID AND register.caseID = `case`.caseID AND drug.drugID = drugitem.drugID AND `case`.caseID = #{caseID}
+	</select>
+	
+		<!-- 以caseID查找患者 -->
+	<select id="searchBycaseIDT" resultType="com.his.entity.Charge">
+		SELECT `case`.caseID, `case`.name, drugitem.itemID, drug.drugName, drug.price, drugitem.number, drugitem.createTime, drugitem.itemState, user.realName
+		FROM drugitem, prescription, register, `case`, drug, user
+		WHERE drugitem.prescriptID = prescription.prescriptID AND prescription.registerID = register.registerID AND register.caseID = `case`.caseID AND drug.drugID = drugitem.drugID AND `case`.caseID = #{caseID} AND register.docID = user.userID
+	</select>
+</mapper>

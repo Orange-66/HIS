@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.his.dao.PmoudleDao">
+	<!-- 以挂号号码查找病历首页信息 -->
+	<select id="selectAll" resultType="com.his.entity.Pmoudle">
+		SELECT *
+		FROM pmoudle, prescription
+		WHERE pmoudle.pPrescriptID = prescription.prescriptID
+	</select>
+	
+		<!-- 以挂号号码查找病历首页信息 -->
+	<select id="getPmoudleList" resultType="com.his.entity.Drug">
+		SELECT *
+		FROM pmoudle, drugitem, drug, constant
+		WHERE pmoudle.pPrescriptID = #{pPrescriptID} AND pmoudle.pPrescriptID = drugitem.prescriptID AND drug.drugID = drugitem.drugID AND drug.dosage = constant.constantID 
+	</select>
+</mapper>
